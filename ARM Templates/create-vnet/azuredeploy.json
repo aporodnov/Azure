@@ -1,82 +1,42 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "type": "string"
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {},
+"variables": {
+    "vNetName": "DevEnv-vNet",
+    "env": "development"
+},
+"resources": [
+    {
+        "name": "[variables('vNetName')]",
+        "type": "Microsoft.Network/virtualNetworks",
+        "apiVersion": "2019-11-01",
+        "location": "[resourceGroup().location]",
+        "tags": {
+            "env": "[variables('env')]"
         },
-        "virtualNetworkName": {
-            "type": "string"
-        },
-        "resourceGroup": {
-            "type": "string"
-        },
-        "addressSpaces": {
-            "type": "array"
-        },
-        "ipv6Enabled": {
-            "type": "bool"
-        },
-        "subnetCount": {
-            "type": "int"
-        },
-        "subnet0_name": {
-            "type": "string"
-        },
-        "subnet0_addressRange": {
-            "type": "string"
-        },
-        "subnet1_name": {
-            "type": "string"
-        },
-        "subnet1_addressRange": {
-            "type": "string"
-        },
-        "ddosProtectionPlanEnabled": {
-            "type": "bool"
-        },
-        "firewallEnabled": {
-            "type": "bool"
-        },
-        "bastionEnabled": {
-            "type": "bool"
-        }
-    },
-    "variables": {},
-    "resources": [
-        {
-            "name": "[parameters('virtualNetworkName')]",
-            "type": "Microsoft.Network/VirtualNetworks",
-            "apiVersion": "2019-09-01",
-            "location": "[parameters('location')]",
-            "dependsOn": [],
-            "tags": {
-                "Name": "VNet",
-                "Team": "DevOps",
-                "Environment": "Development"
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "172.20.0.0/16"
+                ]
             },
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "10.100.0.0/16"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "DevOpsServers",
-                        "properties": {
-                            "addressPrefix": "10.100.100.0/24"
-                        }
-                    },
-                    {
-                        "name": "LabServers",
-                        "properties": {
-                            "addressPrefix": "10.100.110.0/24"
-                        }
+            "subnets": [
+                {
+                    "name": "PublicSub-1",
+                    "properties": {
+                        "addressPrefix": "172.20.0.0/24"
                     }
-                ],
-                "enableDdosProtection": "[parameters('ddosProtectionPlanEnabled')]"
-            }
+                },
+                {
+                    "name": "PrivateSub-1",
+                    "properties": {
+                        "addressPrefix": "172.20.10.0/24"
+                    }
+                }
+            ]
         }
-    ]
+    }
+],
+"outputs": {}
 }
