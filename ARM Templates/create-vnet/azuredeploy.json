@@ -36,7 +36,57 @@
                 }
             ]
         }
-    }
+    },
+    {
+        "name": "Private-NSG",
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "apiVersion": "2019-11-01",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "securityRules": []
+        }
+    },
+ {
+     "name": "Public-NSG",
+     "type": "Microsoft.Network/networkSecurityGroups",
+     "apiVersion": "2019-11-01",
+     "location": "[resourceGroup().location]",
+     "properties": {
+         "securityRules": [
+             {
+                 "name": "Allow-Inbound-SSH",
+                 "properties": {
+                     "description": "SSH",
+                     "protocol": "Tcp",
+                     "sourcePortRange": "*",
+                     "destinationPortRange": "22",
+                     "sourceAddressPrefix": "*",
+                     "destinationAddressPrefix": "*",
+                     "access": "Allow",
+                     "priority": 100,
+                     "direction": "Inbound"
+                 }
+             },
+             {
+                 "name": "Allow-Inbound-HTTP-HTTPS",
+                 "properties": {
+                     "description": "HTTP/HTTPS",
+                     "protocol": "Tcp",
+                     "sourcePortRange": "*",
+                     "destinationPortRanges": [
+                         "80",
+                         "443"
+                     ],
+                     "sourceAddressPrefix": "*",
+                     "destinationAddressPrefix": "*",
+                     "access": "Allow",
+                     "priority": 200,
+                     "direction": "Inbound"
+                 }
+             }
+         ]
+     }
+ }
 ],
 "outputs": {}
 }
