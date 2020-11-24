@@ -1,17 +1,26 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
-    "variables": {
-        "rgName": "DevEnv-RG",
-        "rgLocation": "canadacentral"
+    "parameters": {
+        "rgName": {
+          "type": "string"
+        },
+        "rgLocation": {
+          "type": "string",
+          "defaultValue": "canadacentral",
+          "allowedValues": [
+            "canadacentral",
+            "canadaeast"
+          ]
+        }
     },
+    "variables": {},
     "resources": [
       {
         "type": "Microsoft.Resources/resourceGroups",
         "apiVersion": "2020-06-01",
-        "name": "[variables('rgName')]",
-        "location": "[variables('rgLocation')]",
+        "name": "[parameters('rgName')]",
+        "location": "[parameters('rgLocation')]",
         "tags": {
           "Note": "subscription level deployment"
         },
